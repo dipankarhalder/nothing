@@ -51,5 +51,69 @@
   } else {
     console.log(`Target ${targetValue} not found in the array.`);
   }
+```
+
+3. Depth-First Search (DFS)
+```javascript
+  class Graph {
+    constructor() {
+      this.adjacencyList = {};
+    }
+    addVertex(vertex) {
+      if (!this.adjacencyList[vertex]) {
+        this.adjacencyList[vertex] = [];
+      }
+    }
+    addEdge(vertex1, vertex2) {
+      this.adjacencyList[vertex1].push(vertex2);
+      this.adjacencyList[vertex2].push(vertex1); // for undirected graph
+    }
+    dfsRecursive(start) {
+      const visited = {};
+      const result = [];
+      const dfsHelper = (vertex) => {
+        if (!vertex) return null;
+        visited[vertex] = true;
+        result.push(vertex);
+        this.adjacencyList[vertex].forEach((neighbor) => {
+          if (!visited[neighbor]) {
+            return dfsHelper(neighbor);
+          }
+        });
+      };
+      dfsHelper(start);
+      return result;
+    }
+    dfsIterative(start) {
+      const stack = [start];
+      const visited = {};
+      const result = [];
+      visited[start] = true;
+      while (stack.length) {
+        const vertex = stack.pop();
+        result.push(vertex);
+        this.adjacencyList[vertex].forEach((neighbor) => {
+          if (!visited[neighbor]) {
+            visited[neighbor] = true;
+            stack.push(neighbor);
+          }
+        });
+      }
+      return result;
+    }
+  }
   
+  // Example usage:
+  const graph = new Graph();
+  graph.addVertex('A');
+  graph.addVertex('B');
+  graph.addVertex('C');
+  graph.addVertex('D');
+  graph.addEdge('A', 'B');
+  graph.addEdge('A', 'C');
+  graph.addEdge('B', 'D');
+  graph.addEdge('C', 'D');
+  
+  console.log(graph.dfsRecursive('A')); // Output: ['A', 'B', 'D', 'C']
+  console.log(graph.dfsIterative('A')); // Output: ['A', 'C', 'D', 'B']
 ```
